@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<h1> Dealer: </h1><h1 id="dealer"></h1>
+
+	<h2 id="dealervalue"></h2>
+
+	<h1> Your Hand: </h1><h1 id="hand"></h1>
+
+	<h2 id="handvalue"></h2>
+
+	<h2 id="evaluator"></h2>
+
+	<h2 id="dealerResult"></h2>
+
+	<button id= "start" onclick="start()"> start </button>
+
+	<button id= "stay"onclick="stay()"> stay </button>
+
+	<button id= 'hit' onclick="hit()"> Hit </button>
+
+	<p>  raise bet: <input type="text" id="bet" name=""> 
+		 <input type="button" value="Submit" onclick= "submit()">
+	</p>
+
+	<p id="betprice">Bet:</p>
+	<h1 id="earnings"> Total earnings: </h1>
+
+	<button id="reset" onclick="reset()">reset</button>
+
+	<script type="text/javascript">
+
+		var deck = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+		var dealer = [];
+
+		var hand = [];
+		var x = [];
+		
+
+		playerValue = 0;
+		dealerValue = 0;
+
+		function submit() {
+		
+			x.push(parseInt(document.getElementById('bet').value));
+			
+			document.getElementById('betprice').innerHTML += (x);
+
+		}
+
+		function result() {
+
+			 document.getElementById('earnings').innerHTML += (x);
+
+		}
+
+		function start() {
+			dealer = [];
+
+			hand = [];
+			dealer.push(deck[parseInt(Math.random()*13)] );
+
+			hand.push(deck[parseInt(Math.random()*13)], deck[parseInt(Math.random()*13)] );
+
+			document.getElementById('dealer').innerHTML = (dealer);
+
+			document.getElementById('hand').innerHTML = (hand);
+
+			document.getElementById('handvalue').innerHTML = check(hand);
+
+			document.getElementById('dealervalue').innerHTML = check(dealer);
+		}
+
+		function hit() {
+
+			document.getElementById("start").disabled = true;
+
+			hand.push(deck[parseInt(Math.random()*13)]);
+
+			document.getElementById('hand').innerHTML = (hand);	
+
+			document.getElementById('handvalue').innerHTML = check(hand);
+
+			if (check(hand) < 21) {
+
+				document.getElementById('evaluator').innerHTML = "Hit or Stay?";
+				console.log('HIT OR STAY?');
+
+			} else if (check(hand) == 21) {
+
+				document.getElementById('evaluator').innerHTML = "You win!!";
+				console.log('you win');
+				document.getElementById('earnings').innerHTML += (x);
+				console.log(x);
+
+
+			} else {
+
+				document.getElementById('evaluator').innerHTML = "BUST";
+				console.log('bust');
+				document.getElementById('earnings').innerHTML += ('-'+ x);
+
+			}
+
+
+		}
+
+		function stay() {
+
+			document.getElementById("hit").disabled = true;
+
+			document.getElementById("stay").disabled = true;
+
+			dealer.push(deck[parseInt(Math.random()*13)]);
+
+			document.getElementById('dealer').innerHTML = (dealer);
+
+			document.getElementById('dealervalue').innerHTML = check(dealer);
+
+			
+				while(check(dealer) < 17) {
+
+				dealer.push(deck[parseInt(Math.random()*13)]);
+
+				document.getElementById('dealer').innerHTML = (dealer);
+
+				console.log('dealer');
+			}
+
+			document.getElementById('dealervalue').innerHTML = check(dealer);
+
+				if(check(dealer) == 21) {
+
+					document.getElementById('evaluator').innerHTML = "You lose";
+					console.log("you lose");
+					document.getElementById('earnings').innerHTML += ('-'+ x);
+
+
+				}
+
+
+			if (check(hand) > check(dealer) || check(dealer) > 21) {
+
+					document.getElementById('evaluator').innerHTML = "You win!!";
+					console.log("you win!!!!!!");
+					document.getElementById('earnings').innerHTML += (x);
+					console.log(x);
+
+				} else if (check(hand) === check(dealer)) {
+
+					document.getElementById('evaluator').innerHTML = "Push";
+					console.log("Push");
+				} else {
+
+					document.getElementById('evaluator').innerHTML = "You lose";
+					console.log("you lose");
+					document.getElementById('earnings').innerHTML += ('-'+ x);
+
+				}
+
+		}
+
+		function check(arr) {
+
+			var playerValue = 0;
+			var dealerValue = 0;
+
+			for(var i = 0; i < arr.length; i++) {
+
+				if (arr[i] == "K" || arr[i] == "Q" || arr[i] == "J") {
+
+				    playerValue += 10;
+				    dealerValue += 10;
+
+				} else if (arr[i] == "A") {
+
+					playerValue += 1;
+					dealerValue += 1;
+
+				} else {
+
+					playerValue += parseInt(arr[i]);
+					dealerValue += parseInt(arr[i]);
+				}
+			}
+
+				return playerValue;
+				return dealerValue;
+		}
+
+	function reset() {
+
+		window.location.reload();
+
+	}
+
+
+
+		
+	</script>
+</body>
+</html>
